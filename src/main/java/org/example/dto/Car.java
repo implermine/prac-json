@@ -14,8 +14,8 @@ public class Car {
 //    @JsonProperty("type")
     private String type;
 
-    private int primitiveInt;
-    private Integer wrapperInt;
+//    private int primitiveInt;
+//    private Integer wrapperInt;
 
 
     // jackson은 기본생성자를 이용해 unmarshalling을 시도합니다.

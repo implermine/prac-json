@@ -105,16 +105,16 @@ class ObjectMapperTest {
     @Test
     @DisplayName("JSON객체에는 없는 필드가 Java객체에는 있다면")
     public void test7() throws JsonProcessingException {
-        String jsonString
-                = "{ \"color\" : \"Black\", \"type\" : \"Fiat\", \"primitiveInt\" : \"null\" }";
+//        String jsonString
+//                = "{ \"color\" : \"Black\", \"type\" : \"Fiat\", \"primitiveInt\" : \"null\" }";
+//
+//        // objectMapper
+//        objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
+//
+//        Car car = objectMapper.readValue(jsonString, Car.class);
 
-        // objectMapper
-        objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
-
-        Car car = objectMapper.readValue(jsonString, Car.class);
-
-        System.out.println(car.getPrimitiveInt());
-        System.out.println(car.getWrapperInt());
+//        System.out.println(car.getPrimitiveInt());
+//        System.out.println(car.getWrapperInt());
     }
 
     @Test
