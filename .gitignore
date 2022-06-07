@@ -1,4 +1,8 @@
-
+## Custom
+.idea/
+gradle/
+gradlew
+gradlew.bat
 
 .gradle
 build/
