@@ -7,8 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -70,7 +68,12 @@ public class AnnotationTest {
         assertThat(result).contains("val1");
     }
 
-    //@JsonGetter : 한마디로, 직렬화에 필요한 Getter 메서드 정하기
+    // ============================================================================================================
+
+    // [중요]
+    // @JsonGetter
+
+    // ============================================================================================================
 
     //The @JsonGetter annotation is an alternative to the @JsonProperty annotation, which marks a method as a getter method.
     // @JsonGetter annotation 은 @JsonProperty의 대체제입니다. 게터 메서드를 지정해주는 역할을 합니다
@@ -320,5 +323,11 @@ public class AnnotationTest {
          * }
          */
     }
+
+    // ============================================================================================================
+
+    // @JsonSerialize
+
+    // ============================================================================================================
 
 }
