@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -180,7 +183,11 @@ public class AnnotationTest {
     }
 
     // ============================================================================================================
+
     // @JsonValue
+
+    // ============================================================================================================
+    // 설명 :
     // @JsonValue indicates a single method that the library will use to serialize the entire instance.
     // 전체 객체를 하나의 게터로 함축한다.
 
@@ -255,5 +262,63 @@ public class AnnotationTest {
         // 170
     }
 
+    // ============================================================================================================
+
+    // @JsonRootName
+
+    // ============================================================================================================
+    /**
+     * 설명 : Json 객체를 wrapping 합니다.
+     * 원래 Person이라는 객체가 있어도 Serialization을 수행하면
+     * Person이란 말은 없어지고 person의 필드만 직렬화되어 보여지는데
+     * 이 감싸고 있는 애의 이름을 남깁니다.
+     */
+    @JsonRootName(value = "user")
+    @AllArgsConstructor
+    private static class UserWithRoot{
+        public int id;
+        public String name;
+
+    }
+
+    @AllArgsConstructor
+    private static class UserWithCommon{ // JsonRootName 없으면 밑처럼 enable 해도 의미 없음? (Test 2)
+        public int id;
+        public String name;
+    }
+
+    @Test
+    public void whenSerializingUsingJsonRootName_thenCorrect() throws JsonProcessingException{
+        UserWithRoot user = new UserWithRoot(1,"John");
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+        String result = mapper.writeValueAsString(user);
+
+
+        System.out.println(result);
+        //{"user":{"id":1,"name":"John"}}
+    }
+
+    // JsonRootName 없으면 위처럼 enable 해도 의미 없음? (Test 2)
+    // 이름 정하는거임 따라서, Wrapping은 mapper.enable(Serialization.WRAP_ROOT_VALUE가 함)
+    @Test
+    public void JsonRootName_test2() throws JsonProcessingException {
+        UserWithCommon user = new UserWithCommon(1, "John");
+
+        ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.WRAP_ROOT_VALUE);
+        ObjectWriter objectWriter = mapper.writerWithDefaultPrettyPrinter();
+        String result = objectWriter.writeValueAsString(user);
+
+        System.out.println(result);
+        /**
+         * {
+         *   "UserWithCommon" : {
+         *     "id" : 1,
+         *     "name" : "John"
+         *   }
+         * }
+         */
+    }
 
 }
