@@ -52,54 +52,60 @@ public class DeserializationBasicTest {
          * BeanWithNoArgConstructorAndPublicFields(name=implermine, height=180)
          */
     }
+
+
+    // =================================================================================================================
+
+    @ToString
+    static class BeanWithAllArgConstructor {
+        private String name;
+        private int height;
+
+        public BeanWithAllArgConstructor(String name, int height) {
+            this.name = name;
+            this.height = height;
+
+            System.out.println("BeanWithAllArgConstructor :: AllArgConstructor");
+        }
+    }
+
+    @ToString
+    static class BeanWithNoArgConstructorAndSetter {
+        private String name;
+        private int height;
+
+        public BeanWithNoArgConstructorAndSetter() {
+            System.out.println("BeanWithNoArgConstructorAndSetter :: NoArgConstructor");
+
+        }
+
+        public void setName(String name) {
+            this.name = name;
+            System.out.println("BeanWithNoArgConstructorAndSetter :: setName");
+
+        }
+
+        public void setHeight(int height) {
+            this.height = height;
+            System.out.println("BeanWithNoArgConstructorAndSetter :: setHeight");
+
+        }
+    }
+
+    @ToString
+    static class BeanWithNoArgConstructorAndPublicFields {
+        public String name;
+        public int height;
+
+        public BeanWithNoArgConstructorAndPublicFields() {
+            System.out.println("BeanWithNoArgConstructorAndSetter :: NoArgConstructor");
+
+        }
+    }
+
 }
 
-@ToString
-class BeanWithAllArgConstructor {
-    private String name;
-    private int height;
 
-    public BeanWithAllArgConstructor(String name, int height) {
-        this.name = name;
-        this.height = height;
-
-        System.out.println("BeanWithAllArgConstructor :: AllArgConstructor");
-    }
-}
-
-@ToString
-class BeanWithNoArgConstructorAndSetter {
-    private String name;
-    private int height;
-
-    public BeanWithNoArgConstructorAndSetter() {
-        System.out.println("BeanWithNoArgConstructorAndSetter :: NoArgConstructor");
-
-    }
-
-    public void setName(String name) {
-        this.name = name;
-        System.out.println("BeanWithNoArgConstructorAndSetter :: setName");
-
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-        System.out.println("BeanWithNoArgConstructorAndSetter :: setHeight");
-
-    }
-}
-
-@ToString
-class BeanWithNoArgConstructorAndPublicFields {
-    public String name;
-    public int height;
-
-    public BeanWithNoArgConstructorAndPublicFields() {
-        System.out.println("BeanWithNoArgConstructorAndSetter :: NoArgConstructor");
-
-    }
-}
 
 
 
