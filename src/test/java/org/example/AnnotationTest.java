@@ -1,16 +1,24 @@
 package org.example;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import lombok.AllArgsConstructor;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -100,7 +108,7 @@ public class AnnotationTest {
     }
 
     @Test
-    public void whenSerializingUsingJsonGetter_thenCorrect() throws JsonProcessingException{
+    public void whenSerializingUsingJsonGetter_thenCorrect() throws JsonProcessingException {
 
         MyBean bean = new MyBean(1, "My Bean");
 
@@ -115,7 +123,7 @@ public class AnnotationTest {
     // We can use the @JsonPropertyOrder annotation to specifiy the order of properties on serialization
     // 직렬화 전략 시, 어떤 값이 먼저 나오게끔 설정 함 (그럴일이 있나..?)
     @JsonPropertyOrder({"name"})
-    public static class MyBean2{
+    public static class MyBean2 {
         public int id;
         public String name;
 
@@ -134,7 +142,7 @@ public class AnnotationTest {
     }
 
     @Test
-    public void whenSerializingUsingJsonPropertyOrder_thenCorrect() throws JsonProcessingException{
+    public void whenSerializingUsingJsonPropertyOrder_thenCorrect() throws JsonProcessingException {
 
         MyBean2 bean = new MyBean2(1, "My bean");
 
@@ -149,7 +157,7 @@ public class AnnotationTest {
     // The @JsonRawValue annotation can instruct Jackson to serialize a property exactly as is
 
     // 사용 예시 객체
-    public static class JsonRawValueBean{
+    public static class JsonRawValueBean {
         private String name;
 
         @JsonRawValue
@@ -214,7 +222,7 @@ public class AnnotationTest {
     }
 
     // 예시 객체 2
-    public static class Foo1{
+    public static class Foo1 {
         private String name;
         private String name2;
 
@@ -257,7 +265,7 @@ public class AnnotationTest {
 
     @Test
     public void test2() throws JsonProcessingException {
-        Foo1 foo1 = new Foo1("name1","name2",170);
+        Foo1 foo1 = new Foo1("name1", "name2", 170);
 
         String str = new ObjectMapper().writeValueAsString(foo1);
 
@@ -270,6 +278,7 @@ public class AnnotationTest {
     // @JsonRootName
 
     // ============================================================================================================
+
     /**
      * 설명 : Json 객체를 wrapping 합니다.
      * 원래 Person이라는 객체가 있어도 Serialization을 수행하면
@@ -278,21 +287,21 @@ public class AnnotationTest {
      */
     @JsonRootName(value = "user")
     @AllArgsConstructor
-    private static class UserWithRoot{
+    private static class UserWithRoot {
         public int id;
         public String name;
 
     }
 
     @AllArgsConstructor
-    private static class UserWithCommon{ // JsonRootName 없으면 밑처럼 enable 해도 의미 없음? (Test 2)
+    private static class UserWithCommon { // JsonRootName 없으면 밑처럼 enable 해도 의미 없음? (Test 2)
         public int id;
         public String name;
     }
 
     @Test
-    public void whenSerializingUsingJsonRootName_thenCorrect() throws JsonProcessingException{
-        UserWithRoot user = new UserWithRoot(1,"John");
+    public void whenSerializingUsingJsonRootName_thenCorrect() throws JsonProcessingException {
+        UserWithRoot user = new UserWithRoot(1, "John");
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
@@ -329,5 +338,83 @@ public class AnnotationTest {
     // @JsonSerialize
 
     // ============================================================================================================
+
+    // 직렬화를 어떻게 수행할 지 판단할 CustomSerializer를 등록 할 수 있음.
+
+    // dto 내부에서 간단한 로직을 돌리려면 이것보다 직렬화 판단 로직인 JsonGetter를 이용하는것이 더 좋아보이고,
+    // 해당 어노테이션인 @JsonSerializer를 사용할때는, 같은 로직을 반복하여 여러 필드에 사용해야 하는 경우 (e.g. Date format의 yyyy 의 위치를 바꿔야 한다)
+    // 혹은 여타 다른 Service Layer로 데이터 운송이 필요하다 (Spring) 사용하면 좋을 것 같습니다.
+    private static class EventWithSerializer {
+        public String name;
+
+        @JsonSerialize(using = CustomDateSerializer.class)
+        public Date eventDate;
+
+        public Date eventDateButNoAnnotation;
+
+        public EventWithSerializer(){
+            super();
+        }
+
+        public EventWithSerializer(final String name, final Date eventDate, final Date eventDateButNoAnnotation){
+            this.name = name;
+            this.eventDate = eventDate;
+            this.eventDateButNoAnnotation = eventDateButNoAnnotation;
+        }
+
+        public Date getEventDate(){
+            return this.eventDate;
+        }
+
+        public String getName(){
+            return this.name;
+        }
+
+        public Date getEventDateButNoAnnotation(){
+            return this.eventDateButNoAnnotation;
+        }
+
+    }
+
+    private static class CustomDateSerializer extends StdSerializer<Date>{
+
+        private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        public CustomDateSerializer(){
+            this(null);
+        }
+
+        public CustomDateSerializer(Class<Date> t){
+            super(t);
+        }
+
+        @Override
+        public void serialize(Date value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+            gen.writeString(formatter.format(value));
+            // SimpleDateFormat::format은 Date를 String으로
+        }
+    }
+
+    @Test
+    public void jsonSerializeTest() throws ParseException, JsonProcessingException {
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+
+        String toParse = "20-12-2014 02:30:00";
+        Date date = df.parse(toParse);
+        EventWithSerializer event = new EventWithSerializer("party", date, date);
+
+        String result = new ObjectMapper().writeValueAsString(event);
+        String resultFormatted = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(event);
+
+        System.out.println(resultFormatted);
+
+        /**
+         * {
+         *   "name" : "party",
+         *   "eventDate" : "2014-12-20 02:30:00", <- yyyy--MM-dd 이며 default serialization 전략인 epoch time을 사용치 않음.
+         *   "eventDateButNoAnnotation" : 1419010200000 <- epoch time
+         * }
+         */
+    }
 
 }
