@@ -1,7 +1,9 @@
 package org.example.annotation.deserialization;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.ToString;
@@ -25,7 +27,7 @@ public class JsonSetterTest {
 
 
     @Test
-    public void whenDeserializingUsingJsonSetter_thenCorrect()
+    public void test1()
             throws IOException {
 
         String json = "{\"id\":1,\"theName\":\"My bean\"}";
@@ -38,6 +40,19 @@ public class JsonSetterTest {
         // JsonSetterTest.MyBean(id=1, name=My bean)
     }
 
+    @Test
+    public void test2() throws JsonProcessingException {
+        String json = "{\"id\":1,\"theSecondName\":\"My bean\"}";
+
+        MyBean bean = new ObjectMapper()
+                .readerFor(MyBean.class)
+                .readValue(json);
+
+        System.out.println(bean);
+        // JsonSetterTest.MyBean(id=1, name=My bean)
+    }
+
+
     @Getter
     @ToString
     static class MyBean{
@@ -46,6 +61,11 @@ public class JsonSetterTest {
 
         @JsonSetter("theName")
         public void amISetterReally(String name){
+            this.name = name;
+        }
+
+        @JsonProperty("theSecondName") // -> JsonAlias과 같은 효과
+        public void dragon(String name){
             this.name = name;
         }
     }
