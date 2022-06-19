@@ -1,4 +1,4 @@
-package org.example;
+package org.example.backlog;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
@@ -47,11 +47,11 @@ class CustomTest {
 
         assertThrows(UnrecognizedPropertyException.class,() -> objectMapper.readValue(json,Object1.class));
 
-        // com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unrecognized field "name" (class org.example.CustomTest$Object1), not marked as ignorable (0 known properties: ])
+        // com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unrecognized field "name" (class org.example.backlog.CustomTest$Object1), not marked as ignorable (0 known properties: ])
         // setter 없으면 위 메시지처럼 없다고 나옴
 
 
-        //com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unrecognized field "length" (class org.example.CustomTest$Object1), not marked as ignorable (one known property: "name"])
+        //com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unrecognized field "length" (class org.example.backlog.CustomTest$Object1), not marked as ignorable (one known property: "name"])
         // setter 하나만 두면 (위에 주석친 세터처럼) 이런식으로 하나만 안다고 나옴
 //        System.out.println(object1);
     }
@@ -74,7 +74,7 @@ class CustomTest {
 
 //        System.out.println(object2);
 
-        // com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot construct instance of `org.example.CustomTest$Object2` (although at least one Creator exists): cannot deserialize from Object value (no delegate- or property-based Creator)
+        // com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot construct instance of `org.example.backlog.CustomTest$Object2` (although at least one Creator exists): cannot deserialize from Object value (no delegate- or property-based Creator)
         // at [Source: (String)"{ "name" : "Taegang", "length" : "182" }"; line: 1, column: 3]
     }
 }

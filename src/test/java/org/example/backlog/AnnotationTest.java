@@ -1,4 +1,4 @@
-package org.example;
+package org.example.backlog;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonGenerator;

@@ -10,8 +10,10 @@ import org.junit.jupiter.api.Test;
  */
 
 /**
- * 역직렬화 기본전략은 NoArgConstructor입니다.
+ * 역직렬화 기본전략은 NoArgConstructor -> Public Access -> Setter 입니다.
  * 기본생성자가 존재하지 않는다면 역직렬화를 수행할 수 없습니다.
+ *
+ * 역직렬화 시, 중점은 Setter에 있습니다. 객체의 필드는 그 값을 저장만 할 뿐 , JSON과의 interface는 Setter에 있다는것을 생각해주세요.
  */
 public class DeserializationBasicTest {
 
