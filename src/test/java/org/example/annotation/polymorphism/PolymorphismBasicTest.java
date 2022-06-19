@@ -154,7 +154,7 @@ public class PolymorphismBasicTest {
             this.animal = animal;
         }
 
-        @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+        @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type") // --> 여기 use = JsonTypeInfo.Id.NONE 하면 직렬화 시에 type 안내려줌
         @JsonSubTypes({
                 @JsonSubTypes.Type(value = Dog.class, name = "dog"),
                 @JsonSubTypes.Type(value = Cat.class, name = "cat")
