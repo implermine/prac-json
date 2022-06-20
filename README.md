@@ -2,7 +2,8 @@
 
 fasterxml.jackson API를 사용합니다.
 
-기반 레퍼런스 문서 : [https://www.baeldung.com/jackson]()
+기반 레퍼런스 문서 : [https://www.baeldung.com/jackson]()   
+위 문서 Source : [https://github.com/eugenp/tutorials/tree/master/jackson-simple]()
 
 # Summary
 

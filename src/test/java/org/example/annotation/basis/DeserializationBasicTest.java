@@ -1,4 +1,4 @@
-package org.example.annotation.mono;
+package org.example.annotation.basis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
