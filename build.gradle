@@ -17,8 +17,8 @@ dependencies {
 
     implementation 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
-//    testCompileOnly 'org.projectlombok:lombok:1.18.24'
-//    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3'
 
 

@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
  * 직렬화를 수행 할 Getter를 지정하는 어노테이션 입니다.
  *
  * 직렬화는 게터를 이용해서 수행합니다.
- * 직렬화 할 때 그 Json 객체에 @JsonGetter(x) 의 x가 필드로 생겨난다고 머릿속으로 생각하세요
+ * 직렬화 할 때 그 Json 객체에 @JsonGetter(x) 의 x가 JSON객체의 필드로 생겨난다고 머릿속으로 생각하세요
  */
 
 public class JsonGetterTest {

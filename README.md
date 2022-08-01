@@ -12,11 +12,10 @@ fasterxml.jackson API를 사용합니다.
 * 역직렬화 기본 전략 : NoArg -> Public Access -> Setter
 
 
-
-* ObjectMapper의 Default 전략은 JSON 객체에는 값이 있고, Java 객체에는 없다면 unmarshalling 시 Exception이 발생한다.
-
-* ObjectMapper의 Default 전략은 JSON 객체에는 값이 없거나 null이고, Java 객체에는 있다면 null을 대응한다. 이때 primitiveType의 경우 0이 대입된다 (int의 경우)
-  이러한 default 전략을 configure를 통해 바꿀 수 있다.
+### Default 역직렬화 전략
+#### 역직렬화 (String(JSON) -> JAVA Object)
+1. String에는 값이 있고, JAVA Object에 해당 필드가 없다면 오류 발생.
+2. String에는 값이 없거나 null이고, JAVA Object에 해당 필드가 있다면 null을 대응. (이때, JAVA Object의 필드가 primitive type이라면 해당 primitive type의 적절한 항등원을 대입 (e.g. int -> 0))
 
 ## 작업 로그
 2022-06-27 롬복 관련작업까지 완

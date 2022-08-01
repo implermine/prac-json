@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -21,6 +22,7 @@ public class JsonIncludeTest {
     @NoArgsConstructor
     @AllArgsConstructor
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @ToString
     public static class MyBean{
         public int id;
         public String name;
@@ -44,6 +46,30 @@ public class JsonIncludeTest {
          * }
          */
 
+    }
+
+    /**
+     * 역직렬화 시, null-value를 어떻게 처리하나?
+     *
+     * 난 바본가?
+     */
+    @Test
+    public void test2() throws JsonProcessingException{
+
+        String jsonString1= "{\"id\": 2, \"name\": \"null\"}";
+        String jsonString2 ="{\"id\": 2}";
+
+        MyBean o1 = new ObjectMapper().readerFor(MyBean.class).readValue(jsonString1);
+        MyBean o2 = new ObjectMapper().readerFor(MyBean.class).readValue(jsonString2);
+
+        System.out.println(o1);
+        /**
+         * JsonIncludeTest.MyBean(id=2, name=null)
+         */
+        System.out.println(o2);
+        /**
+         * JsonIncludeTest.MyBean(id=2, name=null)
+         */
     }
 
 }
