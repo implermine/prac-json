@@ -19,3 +19,4 @@ fasterxml.jackson API를 사용합니다.
 
 ## 작업 로그
 2022-06-27 롬복 관련작업까지 완
+2022-08-22 JsonNode로 Temporary Response Dto 계획
