@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.ToString;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -50,6 +51,25 @@ public class JsonSetterTest {
 
         System.out.println(bean);
         // JsonSetterTest.MyBean(id=1, name=My bean)
+    }
+
+    @Test
+    @DisplayName("직렬화시 @JsonProperty 이용?")
+    public void test3() throws JsonProcessingException{
+        String json = "{\"id\":1,\"theSecondName\":\"My bean\"}";
+
+        MyBean bean = new ObjectMapper()
+                .readerFor(MyBean.class)
+                .readValue(json);
+
+        System.out.println(bean);
+        // JsonSetterTest.MyBean(id=1, name=My bean)
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String s = objectMapper.writeValueAsString(bean);
+
+        System.out.println(s);
+        // {"id":1,"name":"My bean"}
     }
 
 
