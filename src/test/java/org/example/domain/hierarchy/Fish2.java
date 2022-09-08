@@ -1,5 +1,7 @@
 package org.example.domain.hierarchy;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.ToString;
 
@@ -9,6 +11,8 @@ import java.util.List;
 @JsonDeserialize(builder = Fish2.Fish2Builder.class)
 public class Fish2 {
 
+
+    @JsonSetter(nulls = Nulls.AS_EMPTY)
     private List<String> stringList;
 
     public Fish2() {

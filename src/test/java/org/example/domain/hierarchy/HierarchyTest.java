@@ -16,7 +16,8 @@ public class HierarchyTest extends BaseCondition {
 
         Animal animal = new Animal();
         Fish fish = new Fish();
-        fish.setStringList(List.of("a", "b", "c"));
+//        fish.setStringList(List.of("a", "b", "c"));
+        fish.setHey("hey");
         animal.setFish(fish);
 
         System.out.println("====== clear above =======");
@@ -42,7 +43,8 @@ public class HierarchyTest extends BaseCondition {
     void deserialization_sequence_test() throws JsonProcessingException {
         String jsonString = "{\n" +
                 "  \"fish\" : {\n" +
-                "    \"stringList\" : [ \"a\", \"b\", \"c\" ]\n" +
+                "    \"stringList\" : null,\n" +
+                "    \"hey\" : \"hey\"\n" +
                 "  }\n" +
                 "}";
 
@@ -74,7 +76,7 @@ public class HierarchyTest extends BaseCondition {
                 "}";
 
         Animal2 animal = objectMapper
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .readerFor(Animal2.class).readValue(jsonString);
 
         System.out.println(animal);
@@ -106,5 +108,21 @@ public class HierarchyTest extends BaseCondition {
          *
          * Animal2(fish=Fish2(stringList=null))
          */
+    }
+
+    @Test
+    @DisplayName("Fish2, 즉 빌더로 Fish를 역직렬화 할때, JsonSetter가 어떻게 작용하는지")
+    void test3() throws JsonProcessingException {
+        String jsonString = "{\n" +
+                "  \"fish\" : {\n" +
+                "    \"stringList\" : \"null\"\n" +
+                "  }\n" +
+                "}";
+
+        Animal2 animal = objectMapper
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .readerFor(Animal2.class).readValue(jsonString);
+
+        System.out.println(animal);
     }
 }
