@@ -3,58 +3,58 @@ package org.example.domain.hierarchy;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.ToString;
 
 import java.util.List;
 
-@ToString
-@JsonDeserialize(builder = Fish2.Fish2Builder.class)
+@JsonDeserialize(builder = Fish2.POJOBuilder.class)
 public class Fish2 {
 
 
     @JsonSetter(nulls = Nulls.AS_EMPTY)
     private List<String> stringList;
 
-    public Fish2() {
-        System.out.println("Fish : No-arg-constructor called...");
-    }
+    private String hey;
 
-    public Fish2(List<String> stringList) {
-        System.out.println("Fish : All-arg-constructor called...");
+    Fish2(List<String> stringList, String hey) {
         this.stringList = stringList;
+        this.hey = hey;
     }
 
-    public static Fish2Builder builder() {
-        return new Fish2Builder();
+    public static POJOBuilder builder() {
+        return new POJOBuilder();
     }
 
     public List<String> getStringList() {
-        System.out.println("Fish : getStringList() called...");
-        return stringList;
+        return this.stringList;
     }
 
-    public void setStringList(List<String> stringList) {
-        System.out.println("Fish : setStringList() called...");
-        this.stringList = stringList;
+    public String getHey() {
+        return this.hey;
     }
 
-    public static class Fish2Builder {
+    public static class POJOBuilder {
         private List<String> stringList;
+        private String hey;
 
-        Fish2Builder() {
+        POJOBuilder() {
         }
 
-        public Fish2Builder stringList(List<String> stringList) {
+        public POJOBuilder stringList(List<String> stringList) {
             this.stringList = stringList;
             return this;
         }
 
+        public POJOBuilder hey(String hey) {
+            this.hey = hey;
+            return this;
+        }
+
         public Fish2 build() {
-            return new Fish2(stringList);
+            return new Fish2(stringList, hey);
         }
 
         public String toString() {
-            return "Fish2.Fish2Builder(stringList=" + this.stringList + ")";
+            return "Fish2.POJOBuilder(stringList=" + this.stringList + ", hey=" + this.hey + ")";
         }
     }
 }

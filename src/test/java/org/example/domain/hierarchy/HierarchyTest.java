@@ -111,13 +111,38 @@ public class HierarchyTest extends BaseCondition {
     }
 
     @Test
-    @DisplayName("Fish2, 즉 빌더로 Fish를 역직렬화 할때, JsonSetter가 어떻게 작용하는지")
+    @DisplayName("Fish2, 즉 빌더로 Fish를 역직렬화 할때, JsonSetter가 null에 대해 어떻게 작용하는지")
     void test3() throws JsonProcessingException {
         String jsonString = "{\n" +
                 "  \"fish\" : {\n" +
-                "    \"stringList\" : \"null\"\n" +
+                "    \"stringList\" : null,\n" +
+                "    \"hey\" : \"hey\"\n" +
                 "  }\n" +
                 "}";
+
+        Animal2 animal = objectMapper
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .readerFor(Animal2.class).readValue(jsonString);
+
+        System.out.println(animal);
+    }
+
+    @Test
+    @DisplayName("아니 null은 둘째치고, POJOBuilder에 withPrefix없으면 오브젝트 매핑이고 뭐고 없는거아님?")
+    void test4() throws JsonProcessingException {
+        String jsonString = "{\n" +
+                "  \"fish\" : {\n" +
+                "    \"stringList\" : [ \"a\", \"b\", \"c\" ],\n" +
+                "    \"hey\" : \"hey\"\n" +
+                "  }\n" +
+                "}";
+
+//        String jsonString2 = "{\n" +
+//                "  \"fish\" : {\n" +
+//                "    \"stringList\" : null,\n" +
+//                "    \"hey\" : \"hey\"\n" +
+//                "  }\n" +
+//                "}";
 
         Animal2 animal = objectMapper
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)

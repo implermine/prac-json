@@ -44,7 +44,7 @@ public class Animal2 {
         }
 
         public POJOBuilder fish(Fish2 fish) {
-            System.out.println("builder에서 fish 세팅");
+            System.out.println("Animal2 builder에서 builder.fish( param ) 으로 fish 세팅");
             this.fish = fish;
             return this;
         }
