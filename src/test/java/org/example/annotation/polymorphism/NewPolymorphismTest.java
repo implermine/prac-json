@@ -8,7 +8,7 @@ import org.example.annotation.polymorphism.model.Dog;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class PolymorphismTest {
+public class NewPolymorphismTest {
 
     private static ObjectWriter objectWriter;
     private static ObjectMapper objectMapper;
