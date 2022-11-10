@@ -16,7 +16,7 @@ public class Dolphin {
 
     public boolean isAlive() {
         System.out.println("isAlive used...");
-        return isAlive;
+        return false;
     }
 
     public Boolean getTall() {
