@@ -1,14 +1,15 @@
-package org.example;
+package org.example.domain._null;
 
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.*;
 import org.assertj.core.api.Assertions;
+import org.example.BaseCondition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class NullTest extends BaseCondition{
+public class NullTest extends BaseCondition {
 
     @Test
     @DisplayName("Serialize null object")
@@ -18,6 +19,25 @@ public class NullTest extends BaseCondition{
         String s = objectMapper.writeValueAsString(obj);
 
         Assertions.assertThat(s).isEqualTo("null"); // not null :X 근데 그럴듯하다
+    }
+
+    @Test
+    @DisplayName("Serialize wrapping null object")
+    void serialize_wrapping_null_object() throws JsonProcessingException {
+        Book book = new Book();
+        book.setName("null");
+        book.setIsbn(null);
+
+        String s = objectWriter.writeValueAsString(book);
+
+        System.out.println(s);
+        /**
+         * {
+         *   "name" : "null", // -> not null
+         *   "isbn" : null // -> null
+         * }
+         */
+
     }
 
     /**

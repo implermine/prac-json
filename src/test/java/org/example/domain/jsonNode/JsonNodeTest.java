@@ -1,13 +1,16 @@
-package org.example.domain.jsonNodeToArray;
+package org.example.domain.jsonNode;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 import org.example.BaseCondition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class TestEntry extends BaseCondition {
+import static org.assertj.core.api.Assertions.*;
+
+public class JsonNodeTest extends BaseCondition {
 
     @Test
     @DisplayName("jsonNode to Java Array")
@@ -46,6 +49,7 @@ public class TestEntry extends BaseCondition {
         JsonNode jsonNode1 = objectMapper.readTree(jsonString);
         JsonNode people1 = jsonNode1.get("people");
         boolean empty1 = people1.isEmpty();
+        System.out.println(empty1); // true
 
         System.out.println("stop");
     }
@@ -75,9 +79,29 @@ public class TestEntry extends BaseCondition {
 
         JsonNode jsonNode1 = objectMapper.readTree(jsonString);
         JsonNode people1 = jsonNode1.get("p");
+        System.out.println(people1); // null
         boolean empty1 = people1.isEmpty();
 
         System.out.println("stop");
+    }
+
+    @Test
+    @DisplayName("jsonNode에서 null 값을 뽑아내면 어떻게 되는가?")
+    void test5() throws JsonProcessingException {
+        String jsonString = "{\n" +
+                "    \"people\": [],\n" +
+                "    \"pepper\": \"null\"\n" +
+                "}";
+
+        JsonNode jsonNode = objectMapper.readTree(jsonString);
+        JsonNode pepper = jsonNode.get("pepper");
+
+        assertThat(pepper).isNotNull();
+        assertThat(pepper.asText()).isEqualTo("null");
+
+        boolean b = (pepper.getNodeType() == JsonNodeType.NULL);
+
+        assertThat(b).isFalse(); // "null" 은 null이 아니다.
     }
 
 }

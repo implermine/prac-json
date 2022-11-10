@@ -14,18 +14,27 @@ import org.junit.jupiter.api.Test;
  * @JsonInclude
  *
  * empty / null / default value인 property를 exclude 배제 할 수 있습니다.
+ *
+ * Annotation used to indicate when value of the annotated property
+ * (when used for a field, method or constructor parameter),
+ * or all properties of the annotated class, is to be ``` serialized. ```
+ * -> 즉, 직렬화 feature에만 적용된다라는 의미.
  */
 public class JsonIncludeTest {
 
 
     @Setter
-    @NoArgsConstructor
     @AllArgsConstructor
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @ToString
     public static class MyBean{
         public int id;
         public String name;
+
+        public MyBean() {
+            this.id = 7;
+            this.name = "default name";
+        }
     }
 
     /**
@@ -51,7 +60,11 @@ public class JsonIncludeTest {
     /**
      * 역직렬화 시, null-value를 어떻게 처리하나?
      *
-     * 난 바본가?
+     * 난 바본가? -> 아닌것 같은데?
+     *
+     * 기본 생성자에 Default Name을 넣어두면 jsonString1의 경우도 역직렬화 시, null로 set되는것이 아니라,
+     *
+     * default name으로 set 될 줄 알았는데, 그렇지 않다.
      */
     @Test
     public void test2() throws JsonProcessingException{
